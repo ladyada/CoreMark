@@ -105,7 +105,7 @@ secs_ret time_in_secs(CORE_TICKS ticks) {
 	return retval;
 }
 
-ee_u32 default_num_contexts=1;
+ee_u32 default_num_contexts=MULTITHREAD;
 
 /* Function : portable_init
 	Target specific initialization code 
@@ -124,11 +124,50 @@ void portable_init(core_portable *p, int *argc, char *argv[])
 	p->portable_id=1;
 }
 /* Function : portable_fini
-	Target specific final code 
+	Target specific final code
 */
 void portable_fini(core_portable *p)
 {
 	p->portable_id=0;
 }
 
+#if (MEM_METHOD==MEM_MALLOC)
+#include <stdlib.h>
+void *portable_malloc(ee_size_t size) {
+	return malloc(size);
+}
+void portable_free(void *p) {
+	free(p);
+}
+#endif
 
+#if (MULTITHREAD > 1) && defined(ARDUINO_ARCH_RP2040)
+/* RP2040/RP2350 dual-core parallel execution */
+extern void start_on_core1(void* (*func)(void*), void* arg);
+extern void wait_for_core1(void);
+
+static core_results *core0_work = NULL;
+
+ee_u8 core_start_parallel(core_results *res) {
+	if (core0_work == NULL) {
+		/* First call - save for core 0 to run later */
+		core0_work = res;
+	} else {
+		/* Second call - start core 1 now */
+		start_on_core1((void* (*)(void*))iterate, res);
+	}
+	return 0;
+}
+
+ee_u8 core_stop_parallel(core_results *res) {
+	if (res == core0_work) {
+		/* Run core 0's work on this core */
+		iterate(res);
+		core0_work = NULL;
+	} else {
+		/* Wait for core 1 to finish */
+		wait_for_core1();
+	}
+	return 0;
+}
+#endif

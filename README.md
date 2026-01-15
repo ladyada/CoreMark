@@ -7,6 +7,9 @@ executing state machines.
 | Board                  | CoreMark |
 | ---------------------- | :------: |
 | Teensy 4.0             | 2313.57  |
+| RP2350 Dual Core (276MHz overclock, -O3) | 1437.00  |
+| RP2350 Dual Core (200MHz overclock, -O3) | 1041.00  |
+| RP2350 Dual Core (150MHz) | 600.00   |
 | Adafruit Metro M4 (200MHz overclock, 'dragons' optimization) | 536.35   |
 | Adafruit Metro M4 (180MHz overclock, faster optimizations) | 458.19   |
 | Teensy 3.6             | 440.72   |

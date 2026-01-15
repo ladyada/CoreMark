@@ -139,7 +139,7 @@ MAIN_RETURN_TYPE main(int argc, char *argv[]) {
 #elif (MEM_METHOD==MEM_MALLOC)
 	for (i=0 ; i<MULTITHREAD; i++) {
 		ee_s32 malloc_override=get_seed(7);
-		if (malloc_override != 0) 
+		if (malloc_override != 0)
 			results[i].size=malloc_override;
 		else
 			results[i].size=TOTAL_DATA_SIZE;
@@ -151,7 +151,7 @@ MAIN_RETURN_TYPE main(int argc, char *argv[]) {
 		results[i].execs=results[0].execs;
 	}
 #elif (MEM_METHOD==MEM_STACK)
-	for (i=0 ; i<MULTITHREAD; i++) {
+	for (i=0 ; i<1; i++) {
 		results[i].memblock[0]=stack_memblock+i*TOTAL_DATA_SIZE;
 		results[i].size=TOTAL_DATA_SIZE;
 		results[i].seed1=results[0].seed1;
@@ -163,13 +163,13 @@ MAIN_RETURN_TYPE main(int argc, char *argv[]) {
 #else
 #error "Please define a way to initialize a memory block."
 #endif
-	/* Data init */ 
+	/* Data init */
 	/* Find out how space much we have based on number of algorithms */
 	for (i=0; i<NUM_ALGORITHMS; i++) {
 		if ((1<<(ee_u32)i) & results[0].execs)
 			num_algorithms++;
 	}
-	for (i=0 ; i<MULTITHREAD; i++) 
+	for (i=0 ; i<MULTITHREAD; i++)
 		results[i].size=results[i].size/num_algorithms;
 	/* Assign pointers */
 	for (i=0; i<NUM_ALGORITHMS; i++) {
@@ -192,9 +192,9 @@ MAIN_RETURN_TYPE main(int argc, char *argv[]) {
 			core_init_state(results[0].size,results[i].seed1,results[i].memblock[3]);
 		}
 	}
-	
+
 	/* automatically determine number of iterations if not set */
-	if (results[0].iterations==0) { 
+	if (results[0].iterations==0) {
 		secs_ret secs_passed=0;
 		ee_u32 divisor;
 		results[0].iterations=1;
@@ -352,5 +352,3 @@ MAIN_RETURN_TYPE main(int argc, char *argv[]) {
 
 	return MAIN_RETURN_VAL;	
 }
-
-

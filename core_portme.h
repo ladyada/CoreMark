@@ -9,6 +9,7 @@
 #define PERFORMANCE_RUN 1
 
 // 0 means auto-detect number of iterations for 10 second test
+// Set to small value for faster testing
 #define ITERATIONS 0
 
 /*
@@ -134,7 +135,7 @@ typedef ee_u32 CORE_TICKS;
 	MEM_STACK - to allocate the data block on the stack (NYI).
 */
 #ifndef MEM_METHOD
-#define MEM_METHOD MEM_STACK
+#define MEM_METHOD MEM_MALLOC  /* Use heap - stack too small for NUMCORES=2 */
 #endif
 
 /* Configuration : MULTITHREAD
@@ -153,7 +154,8 @@ typedef ee_u32 CORE_TICKS;
 	to fit a particular architecture. 
 */
 #ifndef MULTITHREAD
-#define MULTITHREAD 1
+#define MULTITHREAD 2  /* RP2350 dual-core */
+#define PARALLEL_METHOD "RP2350 Dual-Core"
 #define USE_PTHREAD 0
 #define USE_FORK 0
 #define USE_SOCKET 0

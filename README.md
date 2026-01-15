@@ -6,6 +6,7 @@ executing state machines.
 
 | Board                  | CoreMark |
 | ---------------------- | :------: |
+| Teensy 4.0 (1GHz overclock, 'fastest' optimization) | 4161.46 |
 | Teensy 4.0             | 2313.57  |
 | RP2350 Dual Core (276MHz overclock, -O3) | 1437.00  |
 | RP2350 Dual Core (200MHz overclock, -O3) | 1041.00  |
